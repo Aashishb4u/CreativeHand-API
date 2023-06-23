@@ -128,7 +128,7 @@ const updateBusiness = catchAsync(async (req, res) => {
   if(req.body.specialities) {
     req.body.specialities = Buffer.from(req.body.specialities, 'binary');
   }
-  const business = await businessService.updateBusinessById(req.body);
+  const business = await businessService.updateBusinessById(req.params.businessId, req.body);
   res.send(business);
 });
 
