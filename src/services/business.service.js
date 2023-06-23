@@ -56,6 +56,10 @@ const getBusinessByKeyword = async (keyword) => {
   return Business.findOne({ keywordUrl: keyword });
 };
 
+const getBusinessByLanguage = async (lang) => {
+  return Business.findOne({ language: lang });
+};
+
 const getBusinessProductsById = async (id) => {
   return Business.findOne({ _id: id }, { products: 1 })
     .select('-_id products')
@@ -153,6 +157,19 @@ const updateBusinessById = async (businessId, updateBody) => {
   return business;
 };
 
+const renderDemoBusiness = async (updateBody) => {
+  let language = updateBody.language;
+  let business = await getBusinessByLanguage(language);
+  if (business.language && business.isDemo) {
+    business.theme = updateBody.theme;
+    business.template = updateBody.template;
+  } else {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Business not found');
+  }
+  await business.save();
+  return business;
+};
+
 const updateBusinessProductsById = async (businessId, updateBody) => {
   let business = await getBusinessById(businessId);
   if (!business) {
@@ -222,5 +239,7 @@ module.exports = {
   getBusinessByKeyword,
   createOffer,
   getOffers,
-  getAllBusinessByUser
+  getAllBusinessByUser,
+  renderDemoBusiness,
+  getBusinessByLanguage
 };

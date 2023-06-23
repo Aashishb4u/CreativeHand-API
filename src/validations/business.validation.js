@@ -9,6 +9,14 @@ const createBusiness = Joi.object({
   }),
 });
 
+const renderDemoBusiness = Joi.object({
+  body: Joi.object().keys({
+    theme: Joi.string().required(),
+    template: Joi.string().required(),
+    language: Joi.string().required(),
+  })
+});
+
 const updateBusiness = Joi.object({
   body: Joi.object().keys({
     business: Joi.object({
@@ -147,5 +155,6 @@ module.exports = {
   createOffer,
   updateOffer,
   getOffer,
-  getOffers
+  getOffers,
+  renderDemoBusiness
 };

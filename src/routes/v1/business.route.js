@@ -11,12 +11,13 @@ router
   .post(auth('manageUsers'), validate(businessValidation.createBusiness), businessController.createBusiness)
   .get(auth('getUsers'), validate(businessValidation.getBusiness), businessController.getBusiness);
 
+router.post('/renderDemoBusiness', validate(businessValidation.renderDemoBusiness), businessController.renderDemoBusiness);
+
 router
   .route('/:businessId')
   .get(auth('getUsers'), validate(businessValidation.getBusiness), businessController.getBusinessById)
   .patch(auth('manageUsers'), validate(businessValidation.updateBusiness), businessController.updateBusiness);
   // .delete(auth('manageUsers'), validate(businessValidation.deleteUser), businessController.deleteUser);
-
 
 router
   .route('/image/:businessId')

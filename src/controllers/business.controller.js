@@ -97,7 +97,6 @@ const uploadProductImage = catchAsync(async (req, res) => {
   });
 });
 
-
 const getBusinessById = catchAsync(async (req, res) => {
   const business = await businessService.getBusinessById(req.params.businessId);
   if (!business) {
@@ -129,7 +128,12 @@ const updateBusiness = catchAsync(async (req, res) => {
   if(req.body.specialities) {
     req.body.specialities = Buffer.from(req.body.specialities, 'binary');
   }
-  const business = await businessService.updateBusinessById(req.params.businessId, req.body);
+  const business = await businessService.updateBusinessById(req.body);
+  res.send(business);
+});
+
+const renderDemoBusiness = catchAsync(async (req, res) => {
+  const business = await businessService.renderDemoBusiness(req.body);
   res.send(business);
 });
 
@@ -137,7 +141,6 @@ const deleteBusiness = catchAsync(async (req, res) => {
   await businessService.deleteBusinessById(req.params.businessId);
   res.status(httpStatus.NO_CONTENT).send();
 });
-
 
 const getOffers = catchAsync(async (req, res) => {
   const result = await businessService.getOffers();
@@ -161,5 +164,6 @@ module.exports = {
   getBusinessByKeyword,
   getOffers,
   createOffer,
+  renderDemoBusiness
   // updateBusinessProducts
 };
