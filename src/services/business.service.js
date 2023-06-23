@@ -141,6 +141,14 @@ const updateBusinessById = async (businessId, updateBody) => {
     business.status = updateBody.status;
   }
 
+  if(updateBody.language) {
+    business.language = updateBody.language;
+  }
+
+  if(updateBody.isDemo) {
+    business.isDemo = updateBody.isDemo;
+  }
+
   if(updateBody.PaymentStatus) {
     business.PaymentStatus = updateBody.PaymentStatus;
   }

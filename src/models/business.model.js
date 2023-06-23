@@ -54,7 +54,7 @@ const businessSchema = mongoose.Schema(
             facebook: String,
             linkedin: String
         },
-        specialities: Buffer,
+        specialities: String,
         products: [{
             productImageUrl: {
                 type: String,

@@ -103,7 +103,7 @@ const getBusinessById = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Business not found');
   }
   const userDetails = await userService.getUserById(business.customerId);
-  const specialitiesData = business.specialities ? business.specialities.toString() : '';
+  const specialitiesData = business.specialities;
   res.send({...business._doc, specialitiesData, userDetails});
 });
 
@@ -120,14 +120,11 @@ const getBusinessByKeyword = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Business not found');
   }
   const userDetails = await userService.getUserById(business.customerId);
-  const specialitiesData = business.specialities ? business.specialities.toString() : '';
+  const specialitiesData = business.specialities;
   res.send({...business._doc, specialitiesData, userDetails});
 });
 
 const updateBusiness = catchAsync(async (req, res) => {
-  if(req.body.specialities) {
-    req.body.specialities = Buffer.from(req.body.specialities, 'binary');
-  }
   const business = await businessService.updateBusinessById(req.params.businessId, req.body);
   res.send(business);
 });
