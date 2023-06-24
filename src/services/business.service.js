@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const { Business, Payment, User } = require('../models');
-const { Offer, WebsiteEnquiry } = require('../models');
+const { Offer, WebsiteEnquiry, BusinessView } = require('../models');
 const ApiError = require('../utils/ApiError');
 const _ = require("lodash");
 /**
@@ -237,6 +237,20 @@ const contactUs = async (body) => {
   return WebsiteEnquiry.create(body);
 };
 
+const addView = async (businessId ,body) => {
+  const data = {
+    businessId: businessId,
+    pageName: body.pageName
+  };
+  return BusinessView.create(data);
+};
+
+
+const getViews = async (businessId) => {
+  return views = BusinessView.find({businessId: businessId});
+};
+
+
 module.exports = {
   createBusiness,
   queryBusinesses,
@@ -254,5 +268,7 @@ module.exports = {
   getAllBusinessByUser,
   renderDemoBusiness,
   getBusinessByLanguage,
-  contactUs
+  contactUs,
+  addView,
+  getViews
 };

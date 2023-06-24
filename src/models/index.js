@@ -8,3 +8,4 @@ module.exports.Offer = require('./offer.model');
 module.exports.Payment = require('./payment.model');
 module.exports.PhoneBook = require('./phonebook.model');
 module.exports.WebsiteEnquiry = require('./websiteEnquiry.model');
+module.exports.BusinessView = require('./businessView.model');

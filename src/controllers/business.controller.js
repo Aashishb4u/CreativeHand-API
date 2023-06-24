@@ -154,6 +154,17 @@ const contactUs = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(business);
 });
 
+const addView = catchAsync(async (req, res) => {
+  const pageName = req.body.pageName;
+  const business = await businessService.addView(req.params.businessId, pageName);
+  res.status(httpStatus.CREATED).send(business);
+});
+
+const getViews = catchAsync(async (req, res) => {
+  const business = await businessService.getViews(req.params.businessId);
+  res.status(httpStatus.CREATED).send(business);
+});
+
 module.exports = {
   createBusiness,
   uploadBusinessImage,
@@ -167,6 +178,8 @@ module.exports = {
   getOffers,
   createOffer,
   renderDemoBusiness,
-  contactUs
+  contactUs,
+  addView,
+  getViews
   // updateBusinessProducts
 };

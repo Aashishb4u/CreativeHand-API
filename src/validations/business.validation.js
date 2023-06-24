@@ -25,6 +25,21 @@ const contactUs = Joi.object({
   })
 });
 
+const updateViews = Joi.object({
+  params: Joi.object().keys({
+    businessId: Joi.custom(objectId),
+  }),
+  body: Joi.object().keys({
+    pageName: Joi.string()
+  })
+});
+
+const getViews = Joi.object({
+  params: Joi.object().keys({
+    businessId: Joi.custom(objectId),
+  }),
+});
+
 const updateBusiness = Joi.object({
   body: Joi.object().keys({
     business: Joi.object({
@@ -165,5 +180,7 @@ module.exports = {
   getOffer,
   getOffers,
   renderDemoBusiness,
-  contactUs
+  contactUs,
+  updateViews,
+  getViews
 };
