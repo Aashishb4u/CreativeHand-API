@@ -17,6 +17,14 @@ const renderDemoBusiness = Joi.object({
   })
 });
 
+const contactUs = Joi.object({
+  body: Joi.object().keys({
+    name: Joi.string(),
+    email: Joi.string(),
+    phoneNumber: Joi.string(),
+  })
+});
+
 const updateBusiness = Joi.object({
   body: Joi.object().keys({
     business: Joi.object({
@@ -156,5 +164,6 @@ module.exports = {
   updateOffer,
   getOffer,
   getOffers,
-  renderDemoBusiness
+  renderDemoBusiness,
+  contactUs
 };

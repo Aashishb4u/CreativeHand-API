@@ -149,6 +149,11 @@ const createOffer = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(business);
 });
 
+const contactUs = catchAsync(async (req, res) => {
+  const business = await businessService.contactUs(req.body);
+  res.status(httpStatus.CREATED).send(business);
+});
+
 module.exports = {
   createBusiness,
   uploadBusinessImage,
@@ -161,6 +166,7 @@ module.exports = {
   getBusinessByKeyword,
   getOffers,
   createOffer,
-  renderDemoBusiness
+  renderDemoBusiness,
+  contactUs
   // updateBusinessProducts
 };

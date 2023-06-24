@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const { Business, Payment, User } = require('../models');
-const { Offer } = require('../models');
+const { Offer, WebsiteEnquiry } = require('../models');
 const ApiError = require('../utils/ApiError');
 const _ = require("lodash");
 /**
@@ -233,6 +233,10 @@ const getOffers = async () => {
   return Offer.find();
 };
 
+const contactUs = async (body) => {
+  return WebsiteEnquiry.create(body);
+};
+
 module.exports = {
   createBusiness,
   queryBusinesses,
@@ -249,5 +253,6 @@ module.exports = {
   getOffers,
   getAllBusinessByUser,
   renderDemoBusiness,
-  getBusinessByLanguage
+  getBusinessByLanguage,
+  contactUs
 };

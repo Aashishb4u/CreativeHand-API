@@ -12,6 +12,7 @@ router
   .get(auth('getUsers'), validate(businessValidation.getBusiness), businessController.getBusiness);
 
 router.post('/renderDemoBusiness', validate(businessValidation.renderDemoBusiness), businessController.renderDemoBusiness);
+router.post('/contactUs', validate(businessValidation.contactUs), businessController.contactUs);
 
 router
   .route('/:businessId')

@@ -8,7 +8,10 @@ const roleSchema = mongoose.Schema(
       default: '',
       required: true
     }
-  });
+  },
+    {
+        timestamps: true,
+    });
 
 // add plugin that converts mongoose to json
 roleSchema.plugin(toJSON);
