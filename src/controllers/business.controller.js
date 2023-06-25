@@ -193,9 +193,19 @@ const downloadEnquiryImage = catchAsync(async (req, res) => {
   const userDetails = await userService.getUserById(business.customerId);
   const productDetails = business.products.find(v => v._id.toString() === req.params.productId);
   const result = await templateService.fetchTemplates('enquiry', business, userDetails, productDetails);
+
+  const options = {
+    puppeteerArgs: {
+      executablePath: '/usr/bin/chromium-browser',
+      // other Puppeteer options...
+    },
+    // other node-html-to-image options...
+  };
+
   nodeHtmlToImage({
       output: result.outputPath,
-      html: result.updatedHtmlContent
+      html: result.updatedHtmlContent,
+      puppeteerArgs: options.puppeteerArgs,
   }).then(() => {
     const filename = path.basename(result.outputPath, 'result');
     const relativePath = path.join('public', filename);
