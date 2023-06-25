@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const nodeHtmlToImage = require('node-html-to-image');
+
 const constants = require('../utils/constants');
 
 const fetchTemplates = (myCondition, businessDetails, userDetails, productDetails) => {
@@ -33,15 +33,11 @@ const fetchTemplates = (myCondition, businessDetails, userDetails, productDetail
                 updatedHtmlContent = updatedHtmlContent.replace('{{productImageUrl}}', productImagePath);
                 updatedHtmlContent = updatedHtmlContent.replace('{{businessImageUrl}}', businessImagePath);
                 updatedHtmlContent = updatedHtmlContent.replace('{{businessName}}', businessName.toString());
-
-                nodeHtmlToImage({
-                    output: outputPath,
-                    html: updatedHtmlContent
-                }).then(() => {
-                    resolve(outputPath);
-                }).catch((error) => {
-                    reject(error);
-                });
+                const data =  {
+                    updatedHtmlContent: updatedHtmlContent,
+                    outputPath: outputPath
+                };
+                return resolve(data);
             }
         });
     });

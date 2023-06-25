@@ -8,6 +8,8 @@ const { picUpload, multipleFileUpload } = require('../utils/fileUpload');
 const { handleSuccess, handleError, handleSuccessImage } = require('../utils/SuccessHandler');
 const templateService = require('../utils/viewTemplates');
 const path = require('path');
+const nodeHtmlToImage = require('node-html-to-image');
+const fetch = require('node-fetch');
 
 const createBusiness = catchAsync(async (req, res) => {
   const business = await businessService.createBusiness(req.body);
@@ -156,6 +158,21 @@ const contactUs = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(business);
 });
 
+const downloadImage = catchAsync(async (req, res) => {
+  const imageUrl = req.body.imageUrl;
+  const response = await fetch(imageUrl);
+
+  // Set the appropriate headers for downloading the image
+  res.setHeader('Content-Type', 'application/octet-stream');
+  res.setHeader('Content-Disposition', 'attachment; filename=image.png');
+
+  // Convert the response body to a buffer
+  const imageBuffer = await response.buffer();
+
+  // Send the buffer as the response
+  res.send(imageBuffer);
+});
+
 const addView = catchAsync(async (req, res) => {
   const pageName = req.body.pageName;
   const business = await businessService.addView(req.params.businessId, pageName);
@@ -176,9 +193,16 @@ const downloadEnquiryImage = catchAsync(async (req, res) => {
   const userDetails = await userService.getUserById(business.customerId);
   const productDetails = business.products.find(v => v._id.toString() === req.params.productId);
   const result = await templateService.fetchTemplates('enquiry', business, userDetails, productDetails);
-  const filename = path.basename(result);
-  const relativePath = path.join('public', filename);
-  res.status(httpStatus.CREATED).send(relativePath);
+  nodeHtmlToImage({
+      output: result.outputPath,
+      html: result.updatedHtmlContent
+  }).then(() => {
+    const filename = path.basename(result.outputPath, 'result');
+    const relativePath = path.join('public', filename);
+    res.status(httpStatus.CREATED).send({imagePath: relativePath});
+  }).catch((error) => {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Could not create Image');
+  });
 });
 
 module.exports = {
@@ -197,6 +221,7 @@ module.exports = {
   contactUs,
   addView,
   getViews,
-  downloadEnquiryImage
+  downloadEnquiryImage,
+  downloadImage
   // updateBusinessProducts
 };
