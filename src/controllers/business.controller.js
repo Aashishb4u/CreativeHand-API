@@ -211,6 +211,7 @@ const downloadEnquiryImage = catchAsync(async (req, res) => {
     const relativePath = path.join('public', filename);
     res.status(httpStatus.CREATED).send({imagePath: relativePath});
   }).catch((error) => {
+    console.log(error);
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Could not create Image');
   });
 });
