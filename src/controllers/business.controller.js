@@ -206,7 +206,7 @@ const downloadEnquiryImage = catchAsync(async (req, res) => {
   nodeHtmlToImage({
       output: result.outputPath,
       html: result.updatedHtmlContent,
-      puppeteerArgs: options.puppeteerArgs,
+      puppeteerArgs: options.puppeteerArgs, // comment this for local (Imaportant)
   }).then(() => {
     const filename = path.basename(result.outputPath, 'result');
     const relativePath = path.join('public', filename);

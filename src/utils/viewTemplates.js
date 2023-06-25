@@ -12,6 +12,8 @@ const fetchTemplates = (myCondition, businessDetails, userDetails, productDetail
     const productName = productDetails.productName;
     const productDescription = `${productDetails.productDescription}`;
     const businessLogo = `${constants.creativeHand}`;
+
+    // for local use constants.creativeHandLocal
     const productImagePath = `${constants.creativeHandProduction}${productDetails.productImageUrl}`;
     const businessImagePath = `${constants.creativeHandProduction}${businessDetails.business.businessImageUrl}`;
     const outputPath = path.join(__dirname, '..', 'public', `product-enquiry-${businessId}.png`);
