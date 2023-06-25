@@ -33,13 +33,6 @@ const getUser = {
 };
 
 
-const getBusinessByUserId = {
-  params: Joi.object().keys({
-    userId: Joi.string().custom(objectId),
-  }),
-};
-
-
 const getCustomers = {
   params: Joi.object().keys({
 
@@ -99,7 +92,6 @@ module.exports = {
   deleteUser,
   getRoles,
   getCustomers,
-  getBusinessByUserId,
   createPhoneBook,
   getPhoneBookByUserId,
   deletePhoneBookByUserId

@@ -35,11 +35,6 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
-const getBusinessByUserId = catchAsync(async (req, res) => {
-  let business = await businessService.getAllBusinessByUser(req.params.userId);
-  res.send(business);
-});
-
 const getPhoneBookByUserId = catchAsync(async (req, res) => {
   let phoneBook = await userService.getPhoneBookByUserId(req.params.userId);
   res.send(phoneBook);
@@ -75,7 +70,6 @@ module.exports = {
   deleteUser,
   getRoles,
   getCustomers,
-  getBusinessByUserId,
   createPhoneBook,
   getPhoneBookByUserId,
   deletePhoneBookByUserId

@@ -74,10 +74,6 @@ const getBusinessPortfolioById = async (id) => {
     .exec();
 };
 
-const getAllBusinessByUser = async (userId) => {
-  return Business.find({ customerId: userId });
-};
-
 /**
  * Update business by id
  * @param {ObjectId} businessId
@@ -265,7 +261,6 @@ module.exports = {
   getBusinessByKeyword,
   createOffer,
   getOffers,
-  getAllBusinessByUser,
   renderDemoBusiness,
   getBusinessByLanguage,
   contactUs,

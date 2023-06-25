@@ -26,9 +26,6 @@ router
   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
-router
-  .route('/business/:userId')
-  .get(auth('getUsers'), validate(userValidation.getBusinessByUserId), userController.getBusinessByUserId);
 
 router
   .route('/phoneBook/:userId')
