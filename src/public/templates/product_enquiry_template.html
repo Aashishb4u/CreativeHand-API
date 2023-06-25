@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <title>Product Card with Watermark</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .product-card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+
+        }
+
+        .product-card {
+            width: 380px;
+            position: relative;
+            box-shadow: 0 2px 7px #dfdfdf;
+            background: #fafafa;
+        }
+
+        .badge {
+            position: absolute;
+            left: 0;
+            top: 20px;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 700;
+            background: red;
+            color: #fff;
+            padding: 3px 10px;
+        }
+
+        .product-tumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            background: #f0f0f0;
+        }
+
+        .product-tumb img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .product-details {
+            padding: 30px;
+        }
+
+        .product-catagory {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .product-details h4 a {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+            color: #363636;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .product-details h4 a:hover {
+            color: #fbb72c;
+        }
+
+        .product-details .description {
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .product-bottom-details {
+            overflow: hidden;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .product-bottom-details div {
+            float: left;
+            width: 50%;
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: #fbb72c;
+            font-weight: 600;
+        }
+
+        .product-price small {
+            font-size: 80%;
+            font-weight: 400;
+            text-decoration: line-through;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .product-links {
+            text-align: right;
+        }
+
+        .product-links a {
+            display: inline-block;
+            margin-left: 5px;
+            color: #e1e1e1;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        .product-links a:hover {
+            color: #fbb72c;
+        }
+
+        .toolbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            box-shadow: 1px 2px 8px 2px #00000017;
+        }
+
+        .business-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .business-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .logo-sub-title {
+            font-size: 10px;
+        }
+
+        .bus-logo-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #watermark
+        {
+            position: absolute;
+            font-size: 50px;
+            opacity: 0.13;
+            z-index: 99;
+            color: black;
+            transform: rotate(324deg);
+            top: 14%;
+            letter-spacing: 2px;
+            right: -24%;
+            width: 566px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="toolbar">
+    <img src="{{businessLogo}}" alt="Business Logo"
+         class="business-logo">
+    <div class="bus-logo-container">
+        <div class="business-name">Creative Hand</div>
+        <div class="logo-sub-title">Make Your Business Digital</div>
+    </div>
+</div>
+<div class="product-card-container">
+    <div class="product-card">
+        <div class="product-tumb">
+            <img src="{{productImageUrl}}" alt="">
+        </div>
+        <div class="product-details">
+            <span class="product-catagory">{{productName}}</span>
+            <div style="margin-bottom: 10px; line-height: 1.8">
+                <div style="color: gray">{{businessName}}</div>
+                <div style="font-size: 10px; color: gray">{{contactNumbers}}</div>
+                <div style="font-size: 10px; color: gray">{{emailAddress}}</div>
+            </div>
+            <div class="description">
+                {{productDescription}}
+            </div>
+        </div>
+        <div id="watermark">{{businessName}}</div>
+    </div>
+</div>
+</body>
+</html>

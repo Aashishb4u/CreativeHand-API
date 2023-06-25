@@ -6,6 +6,8 @@ const { businessService, userService } = require('../services');
 const {Payment} = require('../models');
 const { picUpload, multipleFileUpload } = require('../utils/fileUpload');
 const { handleSuccess, handleError, handleSuccessImage } = require('../utils/SuccessHandler');
+const templateService = require('../utils/viewTemplates');
+const path = require('path');
 
 const createBusiness = catchAsync(async (req, res) => {
   const business = await businessService.createBusiness(req.body);
@@ -165,6 +167,20 @@ const getViews = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(business);
 });
 
+
+const downloadEnquiryImage = catchAsync(async (req, res) => {
+  const business = await businessService.getBusinessById(req.params.businessId);
+  if (!business) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Business not found');
+  }
+  const userDetails = await userService.getUserById(business.customerId);
+  const productDetails = business.products.find(v => v._id.toString() === req.params.productId);
+  const result = await templateService.fetchTemplates('enquiry', business, userDetails, productDetails);
+  const filename = path.basename(result);
+  const relativePath = path.join('public', filename);
+  res.status(httpStatus.CREATED).send(relativePath);
+});
+
 module.exports = {
   createBusiness,
   uploadBusinessImage,
@@ -180,6 +196,7 @@ module.exports = {
   renderDemoBusiness,
   contactUs,
   addView,
-  getViews
+  getViews,
+  downloadEnquiryImage
   // updateBusinessProducts
 };

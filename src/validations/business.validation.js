@@ -25,6 +25,13 @@ const contactUs = Joi.object({
   })
 });
 
+const downloadEnquiryImage = Joi.object({
+  params: Joi.object().keys({
+    businessId: Joi.custom(objectId),
+    productId: Joi.custom(objectId),
+  })
+});
+
 const updateViews = Joi.object({
   params: Joi.object().keys({
     businessId: Joi.custom(objectId),
@@ -182,5 +189,6 @@ module.exports = {
   renderDemoBusiness,
   contactUs,
   updateViews,
-  getViews
+  getViews,
+  downloadEnquiryImage
 };

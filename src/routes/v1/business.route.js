@@ -13,8 +13,10 @@ router
 
 router.post('/renderDemoBusiness', validate(businessValidation.renderDemoBusiness), businessController.renderDemoBusiness);
 router.post('/contactUs', validate(businessValidation.contactUs), businessController.contactUs);
+
 router.post('/views/:businessId', validate(businessValidation.updateViews), businessController.addView);
 router.get('/views/:businessId', validate(businessValidation.getViews), businessController.getViews);
+router.get('/getProductCard/:productId/:businessId', validate(businessValidation.downloadEnquiryImage), businessController.downloadEnquiryImage);
 
 
 router
