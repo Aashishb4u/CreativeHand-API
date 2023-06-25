@@ -196,6 +196,7 @@ const downloadEnquiryImage = catchAsync(async (req, res) => {
 
   const options = {
     puppeteerArgs: {
+      args: ['--no-sandbox'],
       executablePath: '/usr/bin/chromium-browser',
       // other Puppeteer options...
     },
