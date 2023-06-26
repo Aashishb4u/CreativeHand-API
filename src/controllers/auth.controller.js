@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const { handleSuccess } = require('../utils/SuccessHandler');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -16,7 +17,6 @@ const login = catchAsync(async (req, res) => {
 });
 
 const logout = catchAsync(async (req, res) => {
-  console.log('Here');
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.NO_CONTENT).send();
 });
@@ -28,8 +28,8 @@ const refreshTokens = catchAsync(async (req, res) => {
 
 const forgotPassword = catchAsync(async (req, res) => {
   const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
-  await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  // await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
+  handleSuccess(httpStatus.CREATED, { resetPasswordToken }, 'Refresh Token Generated Successfully.', req, res);
 });
 
 const resetPassword = catchAsync(async (req, res) => {
