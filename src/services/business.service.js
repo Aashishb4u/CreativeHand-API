@@ -125,6 +125,8 @@ const updateBusinessById = async (businessId, updateBody) => {
     business.specialities = updateBody.specialities;
   }
 
+  business.whatsappCatalogue = updateBody.whatsappCatalogue ? updateBody.whatsappCatalogue : '';
+
   if(updateBody.theme) {
     business.theme = updateBody.theme;
   }

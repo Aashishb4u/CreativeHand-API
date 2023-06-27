@@ -132,6 +132,10 @@ const businessSchema = mongoose.Schema(
         isDemo: {
             type: Boolean,
             default: false
+        },
+        whatsappCatalogue: {
+            type: String,
+            default: ''
         }
     },
     {
