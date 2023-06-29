@@ -159,6 +159,14 @@ const updateBusinessById = async (businessId, updateBody) => {
     business.paymentStatus = updateBody.paymentStatus;
   }
 
+  if(updateBody.subscriptionEndDate) {
+    business.subscriptionEndDate = updateBody.subscriptionEndDate;
+  }
+
+  if(updateBody.subscriptionStartDate) {
+    business.subscriptionStartDate = updateBody.subscriptionStartDate;
+  }
+
   await business.save();
   return business;
 };
