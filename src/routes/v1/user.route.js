@@ -13,6 +13,11 @@ router
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
 
+
+router
+    .route('/all')
+    .get(auth('getUsers'), validate(userValidation.getUsers), userController.getAllUsers);
+
 // Sequence is important here - Very Important
 
 router

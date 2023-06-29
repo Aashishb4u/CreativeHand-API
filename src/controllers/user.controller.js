@@ -17,6 +17,12 @@ const getUsers = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getAllUsers = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['name', 'role']);
+  const result = await userService.getAllUsers(filter);
+  res.send(result);
+});
+
 const getCustomers = catchAsync(async (req, res) => {
   const result = await userService.getCustomers();
   res.send(result);
@@ -66,6 +72,7 @@ module.exports = {
   createUser,
   getUsers,
   getUser,
+  getAllUsers,
   updateUser,
   deleteUser,
   getRoles,

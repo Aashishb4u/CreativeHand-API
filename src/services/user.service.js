@@ -47,6 +47,10 @@ const queryUsers = async (filter, options) => {
   return users;
 };
 
+const getAllUsers = async (filter) => {
+  return await User.find(filter);
+};
+
 const getRoles = async () => {
   const roles = await Role.find();
   return roles;
@@ -144,6 +148,7 @@ module.exports = {
   getCustomers,
   createPhoneBook,
   getRoleByName,
+  getAllUsers,
   getPhoneBookByUserId,
   deletePhoneBookByUserId
 };
