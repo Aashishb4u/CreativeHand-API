@@ -9,7 +9,7 @@ const _ = require("lodash");
  * @returns {Promise<Business>}
  */
 const createBusiness = async (businessBody) => {
-  const businessDetails = getBusinessByKeyword(businessBody.keywordUrl);
+  const businessDetails = await getBusinessByKeyword(businessBody.keywordUrl);
   if(businessDetails) {
     throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Keyword is taken.');
   }
