@@ -55,12 +55,6 @@ const getEnquiryByEmail = async (email) => {
  */
 const updateEnquiryById = async (enquiryId, updateBody) => {
   const enquiry = await getEnquiryById(enquiryId);
-  if (!enquiry) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Enquiry not found');
-  }
-  if (updateBody.email && (await Enquiry.isEmailTaken(updateBody.email, enquiryId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-  }
   Object.assign(enquiry, updateBody);
   await enquiry.save();
   return enquiry;

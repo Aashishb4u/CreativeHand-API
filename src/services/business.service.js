@@ -9,6 +9,10 @@ const _ = require("lodash");
  * @returns {Promise<Business>}
  */
 const createBusiness = async (businessBody) => {
+  const businessDetails = getBusinessByKeyword(businessBody.keywordUrl);
+  if(businessDetails) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Keyword is taken.');
+  }
   return Business.create(businessBody);
 };
 
@@ -133,6 +137,10 @@ const updateBusinessById = async (businessId, updateBody) => {
 
   if(updateBody.template) {
     business.template = updateBody.template;
+  }
+
+  if(updateBody.keywordUrl) {
+    business.keywordUrl = updateBody.keywordUrl;
   }
 
   if(updateBody.status) {

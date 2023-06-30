@@ -10,11 +10,11 @@ const ApiError = require('../utils/ApiError');
  */
 const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Email already taken');
   }
 
   if (await User.isContactTaken(userBody.contactNumber)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Contact Number is taken');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Contact Number is taken');
   }
 
   return User.create(userBody);
@@ -98,16 +98,19 @@ const getUserByEmail = async (email) => {
  */
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
+  console.log(user);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Email already taken');
   }
 
   if (updateBody.contactNumber && (await User.isContactTaken(updateBody.contactNumber, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Contact Number is taken');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Contact Number is taken');
   }
+
+  updateBody.password = updateBody.password ? updateBody.password : user.password;
 
   Object.assign(user, updateBody);
   await user.save();
