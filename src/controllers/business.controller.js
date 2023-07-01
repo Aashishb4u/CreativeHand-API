@@ -158,6 +158,13 @@ const contactUs = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(business);
 });
 
+const getWebsiteEnquiries = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ['email', 'contactNumber', 'email']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  let result = await businessService.queryWebsiteEnquiries(filter, options);
+  res.send(result);
+});
+
 const downloadImage = catchAsync(async (req, res) => {
   const imageUrl = req.body.imageUrl;
   const response = await fetch(imageUrl);
@@ -234,6 +241,7 @@ module.exports = {
   addView,
   getViews,
   downloadEnquiryImage,
-  downloadImage
+  downloadImage,
+  getWebsiteEnquiries
   // updateBusinessProducts
 };

@@ -25,6 +25,14 @@ const contactUs = Joi.object({
   })
 });
 
+const getWebsiteEnquiries = Joi.object({
+  query: Joi.object().keys({
+    email: Joi.string(),
+    contactNumber: Joi.string(),
+    name: Joi.string(),
+  })
+});
+
 const downloadImage = Joi.object({
   body: Joi.object().keys({
     imageUrl: Joi.string(),
@@ -197,5 +205,6 @@ module.exports = {
   updateViews,
   getViews,
   downloadEnquiryImage,
-  downloadImage
+  downloadImage,
+  getWebsiteEnquiries
 };

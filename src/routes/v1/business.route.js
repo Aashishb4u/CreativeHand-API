@@ -13,6 +13,7 @@ router
 
 router.post('/renderDemoBusiness', validate(businessValidation.renderDemoBusiness), businessController.renderDemoBusiness);
 router.post('/contactUs', validate(businessValidation.contactUs), businessController.contactUs);
+router.get('/getWebsiteEnquiries', validate(businessValidation.getWebsiteEnquiries), businessController.getWebsiteEnquiries);
 router.post('/downloadImage', validate(businessValidation.downloadImage), businessController.downloadImage);
 
 router.post('/views/:businessId', validate(businessValidation.updateViews), businessController.addView);

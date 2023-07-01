@@ -23,8 +23,12 @@ const websiteEnquirySchema = mongoose.Schema(
         timestamps: true,
     });
 
+
 // add plugin that converts mongoose to json
 websiteEnquirySchema.plugin(toJSON);
+websiteEnquirySchema.plugin(paginate);
+
+// add plugin that converts mongoose to json
 
 const WebsiteEnquiry = mongoose.model('WebsiteEnquiry', websiteEnquirySchema);
 

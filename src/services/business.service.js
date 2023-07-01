@@ -25,6 +25,11 @@ const createBusiness = async (businessBody) => {
  * @param {number} [options.page] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
+const queryWebsiteEnquiries = async (filter, options) => {
+  let enquiries = await WebsiteEnquiry.paginate(filter, options);
+  return enquiries;
+};
+
 const queryBusinesses = async (filter, options) => {
   let businesses = await Business.paginate(filter, options);
   businesses.results = await Promise.all(businesses.results.map(async (business) => {
@@ -283,5 +288,6 @@ module.exports = {
   getBusinessByLanguage,
   contactUs,
   addView,
-  getViews
+  getViews,
+  queryWebsiteEnquiries
 };
