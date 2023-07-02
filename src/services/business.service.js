@@ -120,7 +120,7 @@ const updateBusinessById = async (businessId, updateBody) => {
     business.videoLinks = updateBody.videoLinks;
   }
 
-  if(updateBody.portfolioImages) {
+  if(updateBody.portfolioImages && updateBody.portfolioImages.every(value => value !== null)) {
     business.portfolioImages = updateBody.portfolioImages;
   }
 
