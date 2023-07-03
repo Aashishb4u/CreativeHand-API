@@ -42,7 +42,8 @@ const createPhoneBook = async (body, userId) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
-  const updatedOptions = {...options, populate: 'role'}
+  options.sortBy = 'createdAt:desc'; // Set the sorting criteria to sort by createdAt in descending order
+  const updatedOptions = {...options, populate: 'role'};
   const users = await User.paginate(filter, updatedOptions);
   return users;
 };

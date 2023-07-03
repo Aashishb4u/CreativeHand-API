@@ -144,6 +144,15 @@ const uploadPortfolioImages = {
   }),
 };
 
+const deletePortfolioImage = {
+  params: Joi.object().keys({
+    businessId: Joi.required().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    portfolioIndex: Joi.number().required()
+  })
+};
+
 const getBusinessByKeyword = {
   params: Joi.object().keys({
     keywordUrl: Joi.required(),
@@ -206,5 +215,6 @@ module.exports = {
   getViews,
   downloadEnquiryImage,
   downloadImage,
-  getWebsiteEnquiries
+  getWebsiteEnquiries,
+  deletePortfolioImage
 };

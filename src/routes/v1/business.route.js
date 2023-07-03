@@ -35,7 +35,14 @@ router
 router
   .route('/portfolio/image/:businessId')
   .patch(auth('manageUsers'), validate(businessValidation.uploadPortfolioImages),
-    businessController.uploadPortfolioImages);
+    businessController.uploadPortfolioImages)
+    .post(auth('manageUsers'), validate(businessValidation.deletePortfolioImage),
+    businessController.deletePortfolioImage);
+
+router
+  .route('/portfolio/multiImages/:businessId')
+  .patch(auth('manageUsers'), validate(businessValidation.uploadPortfolioImages),
+    businessController.uploadMultiplePortfolioImages);
 
 router.get('/keyword/:keywordUrl', validate(businessValidation.getBusinessByKeyword), businessController.getBusinessByKeyword);
 
