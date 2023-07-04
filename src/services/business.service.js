@@ -34,22 +34,31 @@ const queryWebsiteEnquiries = async (filter, options) => {
 };
 
 const queryBusinesses = async (filter, options) => {
-    options.sortBy = 'createdAt:desc'; // Set the sorting criteria to sort by createdAt in descending order
+    // Set the sorting criteria to sort by createdAt in descending order if not provided
+    options.sortBy = options.sortBy || 'createdAt:desc';
+
+    // Add the filter for businessName if it is provided
+    if (filter.businessName) {
+        filter['business.businessName'] = { $regex: filter.businessName, $options: 'i' };
+        delete filter.businessName;
+    }
 
     let businesses = await Business.paginate(filter, options);
-    businesses.results = await Promise.all(businesses.results.map(async (business) => {
-        const payments = await Payment.find({businessId: business._id}).exec();
-        const customerDetails = business.customerId ? await User.findOne({_id: business.customerId}).exec() : null;
-        const executiveDetails = business.executiveId ? await User.findOne({_id: business.executiveId}).exec() : null;
-        const offerDetails = business.offerId ? await Offer.findOne({_id: business.offerId}).exec() : null;
-        return {
-            ...business._doc,
-            payments: payments ? payments : null,
-            customerDetails,
-            executiveDetails,
-            offerDetails
-        };
-    }));
+    businesses.results = await Promise.all(
+        businesses.results.map(async (business) => {
+            const payments = await Payment.find({ businessId: business._id }).exec();
+            const customerDetails = business.customerId ? await User.findOne({ _id: business.customerId }).exec() : null;
+            const executiveDetails = business.executiveId ? await User.findOne({ _id: business.executiveId }).exec() : null;
+            const offerDetails = business.offerId ? await Offer.findOne({ _id: business.offerId }).exec() : null;
+            return {
+                ...business._doc,
+                payments: payments ? payments : null,
+                customerDetails,
+                executiveDetails,
+                offerDetails,
+            };
+        })
+    );
 
     return businesses;
 };

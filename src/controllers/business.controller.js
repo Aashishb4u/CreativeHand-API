@@ -144,7 +144,8 @@ const getBusinessById = catchAsync(async (req, res) => {
 });
 
 const getBusiness = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['executiveId', 'customerId', 'status']);
+    const filter = pick(req.query, ['executiveId', 'customerId', 'status',
+        'businessName', 'keywordUrl', 'status']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     let result = await businessService.queryBusinesses(filter, options);
     res.send(result);
