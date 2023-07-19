@@ -148,6 +148,11 @@ const getAllBusiness = catchAsync(async (req, res) => {
     res.send(result);
 });
 
+const getAllScullyBusiness = catchAsync(async (req, res) => {
+    let result = await businessService.allScullyBusiness();
+    res.send(result);
+});
+
 const getBusiness = catchAsync(async (req, res) => {
     const filter = pick(req.query, ['executiveId', 'customerId', 'status',
         'businessName', 'keywordUrl', 'status']);
@@ -283,6 +288,7 @@ module.exports = {
     getWebsiteEnquiries,
     uploadMultiplePortfolioImages,
     deletePortfolioImage,
-    getAllBusiness
+    getAllBusiness,
+    getAllScullyBusiness
     // updateBusinessProducts
 };

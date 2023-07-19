@@ -6,6 +6,7 @@ const businessController = require('../../controllers/business.controller');
 
 const router = express.Router();
 router.get('/all', validate(businessValidation.getBusiness), businessController.getAllBusiness);
+router.get('/all-scully', validate(businessValidation.getBusiness), businessController.getAllScullyBusiness);
 
 router
   .route('/')

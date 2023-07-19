@@ -37,6 +37,17 @@ const allBusiness = async () => {
     return Business.find();
 };
 
+
+const allScullyBusiness = async () => {
+    const businesses = await Business.find().lean();
+    const updatedBusinesses = businesses.map(business => ({
+        ...business,
+        template: "cronus"
+    }));
+
+    return updatedBusinesses;
+};
+
 const queryBusinesses = async (filter, options) => {
     // Set the sorting criteria to sort by createdAt in descending order if not provided
     options.sortBy = options.sortBy || 'createdAt:desc';
@@ -408,5 +419,6 @@ module.exports = {
     getViews,
     queryWebsiteEnquiries,
     deletePortfolioImage,
-    allBusiness
+    allBusiness,
+    allScullyBusiness
 };
