@@ -143,6 +143,11 @@ const getBusinessById = catchAsync(async (req, res) => {
     res.send({...business._doc, specialitiesData, userDetails});
 });
 
+const getAllBusiness = catchAsync(async (req, res) => {
+    let result = await businessService.allBusiness();
+    res.send(result);
+});
+
 const getBusiness = catchAsync(async (req, res) => {
     const filter = pick(req.query, ['executiveId', 'customerId', 'status',
         'businessName', 'keywordUrl', 'status']);
@@ -277,6 +282,7 @@ module.exports = {
     downloadImage,
     getWebsiteEnquiries,
     uploadMultiplePortfolioImages,
-    deletePortfolioImage
+    deletePortfolioImage,
+    getAllBusiness
     // updateBusinessProducts
 };

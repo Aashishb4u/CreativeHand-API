@@ -5,6 +5,7 @@ const businessValidation = require('../../validations/business.validation');
 const businessController = require('../../controllers/business.controller');
 
 const router = express.Router();
+router.get('/all', validate(businessValidation.getBusiness), businessController.getAllBusiness);
 
 router
   .route('/')

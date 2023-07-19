@@ -33,6 +33,10 @@ const queryWebsiteEnquiries = async (filter, options) => {
     return enquiries;
 };
 
+const allBusiness = async () => {
+    return Business.find();
+};
+
 const queryBusinesses = async (filter, options) => {
     // Set the sorting criteria to sort by createdAt in descending order if not provided
     options.sortBy = options.sortBy || 'createdAt:desc';
@@ -403,5 +407,6 @@ module.exports = {
     addView,
     getViews,
     queryWebsiteEnquiries,
-    deletePortfolioImage
+    deletePortfolioImage,
+    allBusiness
 };
