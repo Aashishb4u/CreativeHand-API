@@ -168,6 +168,11 @@ const getBusinessByKeyword = catchAsync(async (req, res) => {
     }
     const userDetails = await userService.getUserById(business.customerId);
     const specialitiesData = business.specialities;
+    
+    // only for scully adjustments.
+    // Replace the "template" key with "uranus"
+    business._doc.template = 'uranus';
+
     res.send({...business._doc, specialitiesData, userDetails});
 });
 
