@@ -39,13 +39,8 @@ const allBusiness = async () => {
 
 
 const allScullyBusiness = async () => {
-    const businesses = await Business.find().lean();
-    const updatedBusinesses = businesses.map(business => ({
-        ...business,
-        template: "cronus"
-    }));
-
-    return updatedBusinesses;
+    const businesses = await Business.find();
+    return businesses;
 };
 
 const queryBusinesses = async (filter, options) => {
