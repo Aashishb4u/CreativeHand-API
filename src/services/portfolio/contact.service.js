@@ -14,7 +14,7 @@ if (config.env !== 'test') {
 
 
 const sendPortfolioEmail = async (userEmail, adminMail, emailSubject, bodyForAdmin, bodyForUser) => {
-    const resend = new Resend('re_Jqag5gfP_9esPC2rC7mkQiAUaCV2bQBKK');
+    const resend = new Resend(config.resend_key);
     const result = await resend.batch.send([
         {
             from: 'Creative Hand <contact@creativehand.co.in>',
@@ -22,7 +22,7 @@ const sendPortfolioEmail = async (userEmail, adminMail, emailSubject, bodyForAdm
             subject: 'Thank you for contacting us!',
             html: bodyForUser.updatedHtmlContent,
             headers: {
-                'X-Entity-Ref-ID': 'Jqag5gfP_9esPC2rC7mkQiAUaCV2bQBKK',
+                'X-Entity-Ref-ID': config.resend_headers,
             },
             tags: [
                 {
@@ -37,7 +37,7 @@ const sendPortfolioEmail = async (userEmail, adminMail, emailSubject, bodyForAdm
             subject: emailSubject,
             html: bodyForAdmin.updatedHtmlContent,
             headers: {
-                'X-Entity-Ref-ID': 'Jqag5gfP_9esPC2rC7mkQiAUaCV2bQBKK',
+                'X-Entity-Ref-ID': config.resend_headers,
             },
             tags: [
                 {
