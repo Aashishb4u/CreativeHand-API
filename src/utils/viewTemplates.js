@@ -35,7 +35,7 @@ const fetchTemplates = (myCondition, businessDetails, userDetails, productDetail
                 updatedHtmlContent = updatedHtmlContent.replace('{{productImageUrl}}', productImagePath);
                 updatedHtmlContent = updatedHtmlContent.replace('{{businessImageUrl}}', businessImagePath);
                 updatedHtmlContent = updatedHtmlContent.replace('{{businessName}}', businessName.toString());
-                const data =  {
+                const data = {
                     updatedHtmlContent: updatedHtmlContent,
                     outputPath: outputPath
                 };
@@ -45,6 +45,54 @@ const fetchTemplates = (myCondition, businessDetails, userDetails, productDetail
     });
 };
 
+const fetchAdminTemplate = (userDetails) => {
+    let filePath = null;
+    const {email, name, phoneNumber, subject, message} = userDetails;
+    filePath = path.join(__dirname, '..', 'public', 'templates', 'portfolio_contact.html');
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (error, htmlContent) => {
+            if (error) {
+                reject(error);
+            } else {
+                const todayDate = new Date().getFullYear().toString();
+                let updatedHtmlContent = htmlContent.replace('{{email}}', email);
+                updatedHtmlContent = updatedHtmlContent.replace('{{name}}', name);
+                updatedHtmlContent = updatedHtmlContent.replace('{{phoneNumber}}', phoneNumber);
+                updatedHtmlContent = updatedHtmlContent.replace('{{subject}}', subject);
+                updatedHtmlContent = updatedHtmlContent.replace('{{message}}', message);
+                updatedHtmlContent = updatedHtmlContent.replace('{{todayDate}}', todayDate);
+                const data = {
+                    updatedHtmlContent: updatedHtmlContent
+                };
+                return resolve(data);
+            }
+        });
+    });
+}
+
+const fetchMailToUserTemplate = (userDetails) => {
+    let filePath = null;
+    const {name} = userDetails;
+    filePath = path.join(__dirname, '..', 'public', 'templates', 'portfolio_user.html');
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (error, htmlContent) => {
+            if (error) {
+                reject(error);
+            } else {
+                const todayDate = new Date().getFullYear().toString();
+                let updatedHtmlContent = htmlContent.replace('{{name}}', name);
+                updatedHtmlContent = updatedHtmlContent.replace('{{todayDate}}', todayDate);
+                const data = {
+                    updatedHtmlContent: updatedHtmlContent
+                };
+                return resolve(data);
+            }
+        });
+    });
+}
+
 module.exports = {
-    fetchTemplates
+    fetchTemplates,
+    fetchAdminTemplate,
+    fetchMailToUserTemplate
 };
