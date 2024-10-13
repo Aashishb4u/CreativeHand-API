@@ -2,6 +2,7 @@ const express = require('express');
 const contactRoute = require('./contact.route');
 const profileRoute = require('./profile.route');
 const blogRoute = require('./blog.route');
+const linkedInRoute = require('./linkedIn.route');
 
 const router = express.Router();
 
@@ -17,7 +18,11 @@ const defaultRoutes = [
     {
         path: '/contact',
         route: contactRoute,
-    }
+    },
+    {
+        path: '/linkedin',
+        route: linkedInRoute,
+    },
 ];
 
 

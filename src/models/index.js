@@ -9,3 +9,4 @@ module.exports.Payment = require('./payment.model');
 module.exports.PhoneBook = require('./phonebook.model');
 module.exports.WebsiteEnquiry = require('./websiteEnquiry.model');
 module.exports.BusinessView = require('./businessView.model');
+module.exports.linkedInBot = require('./linkedInPost.model');

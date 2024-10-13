@@ -3,6 +3,7 @@ const handleSuccess = (statusCode, apiData, apiMessage, req, res) => {
     success: true,
     errorCode: null,
     message: apiMessage,
+    code: statusCode,
     data: apiData,
   };
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
