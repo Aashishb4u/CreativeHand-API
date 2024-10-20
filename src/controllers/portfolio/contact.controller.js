@@ -15,6 +15,12 @@ const sendEmail = catchAsync(async (req, res) => {
     handleSuccess(httpStatus.OK, {verifyEmail}, 'Email Sent Successfully.', req, res);
 });
 
+const sendLinkedInEmail = catchAsync(async (req, res) => {
+    const {userEmail, bodyForUser} = await generateLinkedInEmail(req.body);
+    const verifyEmail = await contactService.sendLinkedInEmail(userEmail, bodyForUser);
+    handleSuccess(httpStatus.OK, {verifyEmail}, 'Email Sent Successfully.', req, res);
+});
+
 const generateEmail = async ({ email, name, phoneNumber, subject, message }) => {
     const adminMail = 'aashishbhagwat4u@gmail.com';
     const emailSubject = `Contact Form Submission: ${subject}`;
@@ -25,6 +31,13 @@ const generateEmail = async ({ email, name, phoneNumber, subject, message }) => 
     return { userEmail: email, adminMail, emailSubject, bodyForAdmin, bodyForUser };
 };
 
+const generateLinkedInEmail = async ({ email }) => {
+    const bodyForUser = await templateService.fetchLinkedInMailToUserTemplate()
+    console.log(bodyForUser);
+    return { userEmail: email, bodyForUser };
+};
+
 module.exports = {
-    sendEmail
+    sendEmail,
+    sendLinkedInEmail
 };

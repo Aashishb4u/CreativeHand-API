@@ -11,7 +11,15 @@ const email = {
 };
 
 
+const linkedin_email = {
+    body: Joi.object().keys({
+        email: Joi.string().required().email(),
+    }),
+};
+
+
 
 module.exports = {
-    email
+    email,
+    linkedin_email
 };

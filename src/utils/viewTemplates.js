@@ -91,8 +91,26 @@ const fetchMailToUserTemplate = (userDetails) => {
     });
 }
 
+const fetchLinkedInMailToUserTemplate = () => {
+    let filePath = null;
+    filePath = path.join(__dirname, '..', 'public', 'templates', 'linkedIn_mail_template.html');
+    return new Promise((resolve, reject) => {
+        fs.readFile(filePath, 'utf8', (error, htmlContent) => {
+            if (error) {
+                reject(error);
+            } else {
+                const data = {
+                    updatedHtmlContent: htmlContent
+                };
+                return resolve(data);
+            }
+        });
+    });
+}
+
 module.exports = {
     fetchTemplates,
     fetchAdminTemplate,
-    fetchMailToUserTemplate
+    fetchMailToUserTemplate,
+    fetchLinkedInMailToUserTemplate
 };

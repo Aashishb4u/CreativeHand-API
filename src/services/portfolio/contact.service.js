@@ -53,6 +53,31 @@ const sendPortfolioEmail = async (userEmail, adminMail, emailSubject, bodyForAdm
     return result;
 };
 
+const sendLinkedInEmail = async (userEmail, bodyForUser) => {
+    const resend = new Resend(config.resend_key);
+    const result = await resend.batch.send([
+        {
+            from: 'Creative Hand <contact@creativehand.co.in>',
+            to: [userEmail],
+            subject: 'Potential Fit for Your Team – Aashish Bhagwat’s Portfolio',
+            html: bodyForUser.updatedHtmlContent,
+            headers: {
+                'X-Entity-Ref-ID': config.resend_headers,
+            },
+            tags: [
+                {
+                    name: 'category',
+                    value: 'confirm_email',
+                },
+            ],
+        }
+    ]);
+
+    console.log(result);
+
+    return result;
+};
+
 
 // const sendPortfolioEmail = async (userEmail, adminMail, emailSubject, bodyForAdmin, bodyForUser) => {
 //     try {
@@ -101,5 +126,6 @@ const sendPortfolioEmail = async (userEmail, adminMail, emailSubject, bodyForAdm
 
 
 module.exports = {
-    sendPortfolioEmail
+    sendPortfolioEmail,
+    sendLinkedInEmail
 };
