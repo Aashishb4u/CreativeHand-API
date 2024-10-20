@@ -5,6 +5,7 @@ const { handleSuccess } = require('../../utils/SuccessHandler');
 const templateService = require('../../utils/viewTemplates');
 const fetch = require('node-fetch');
 const {Headers} = require('node-fetch');
+const linkedInEmail = require('../../models/linkedInEmail.model'); // Assume you have a model to track sent emails
 
 global.fetch = fetch;
 global.Headers = Headers;
@@ -17,8 +18,15 @@ const sendEmail = catchAsync(async (req, res) => {
 
 const sendLinkedInEmail = catchAsync(async (req, res) => {
     const {userEmail, bodyForUser} = await generateLinkedInEmail(req.body);
-    const verifyEmail = await contactService.sendLinkedInEmail(userEmail, bodyForUser);
-    handleSuccess(httpStatus.OK, {verifyEmail}, 'Email Sent Successfully.', req, res);
+
+    // Check if email was already sent to user
+    const existingEmail = await linkedInEmail.findOne({ email: userEmail });
+    if (existingEmail) {
+        handleSuccess(httpStatus.OK, {userEmail}, 'Email Already Sent.', req, res);
+    } else {
+        const verifyEmail = await contactService.sendLinkedInEmail(userEmail, bodyForUser);
+        handleSuccess(httpStatus.OK, {verifyEmail}, 'Email Sent Successfully.', req, res);
+    }
 });
 
 const generateEmail = async ({ email, name, phoneNumber, subject, message }) => {
