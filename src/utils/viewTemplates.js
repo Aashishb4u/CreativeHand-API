@@ -93,7 +93,7 @@ const fetchMailToUserTemplate = (userDetails) => {
 
 const fetchLinkedInMailToUserTemplate = () => {
     let filePath = null;
-    filePath = path.join(__dirname, '..', 'public', 'templates', 'linkedIn_mail_template.html');
+    filePath = path.join(__dirname, '..', 'public', 'templates', 'linkedIn_mail_template_seo_optimised.html');
     return new Promise((resolve, reject) => {
         fs.readFile(filePath, 'utf8', (error, htmlContent) => {
             if (error) {
