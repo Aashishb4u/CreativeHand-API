@@ -29,7 +29,7 @@ const linkedInFollowersSchema = mongoose.Schema(
     },
     mutualConnections: {
       type: String,
-      required: true
+      default: ''
     },
     name: {
       type: String,

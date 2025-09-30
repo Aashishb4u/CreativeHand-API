@@ -185,7 +185,6 @@ const setLinkedInFollowers = async (linkedInContactData) => {
             caption,
             degree,
             headline,
-            mutualConnections,
             name,
             profileUrl
         } = contact;
@@ -201,7 +200,6 @@ const setLinkedInFollowers = async (linkedInContactData) => {
                 caption,
                 degree,
                 headline,
-                mutualConnections,
                 name,
                 profileUrl
             });
@@ -213,7 +211,6 @@ const setLinkedInFollowers = async (linkedInContactData) => {
             followersDoc.caption = caption;
             followersDoc.degree = degree;
             followersDoc.headline = headline;
-            followersDoc.mutualConnections = mutualConnections;
             followersDoc.name = name;
             followersDoc.profileUrl = profileUrl;
             await followersDoc.save();
