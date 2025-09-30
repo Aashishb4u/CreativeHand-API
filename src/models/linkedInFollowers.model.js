@@ -5,25 +5,45 @@ const linkedInFollowersSchema = mongoose.Schema(
   {
     acceptButtonText: {
       type: String,
-      default: null
+      default: ''
     },
     acceptLabel: {
       type: String,
-      default: null
+      default: ''
     },
-    avatar: String,
-    caption: String,
-    degree: String,
-    headline: String,
-    mutualConnections: String,
-    name: String,
-    profileUrl: String
+    avatar: {
+      type: String,
+      default: ''
+    },
+    caption: {
+      type: String,
+      required: true
+    },
+    degree: {
+      type: String,
+      default: ''
+    },
+    headline: {
+      type: String,
+      default: ''
+    },
+    mutualConnections: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    profileUrl: {
+      type: String,
+      default: ''
+    }
   },
   {
     timestamps: true
   }
 );
-
 
 // add plugin that converts mongoose to json
 linkedInFollowersSchema.plugin(toJSON);

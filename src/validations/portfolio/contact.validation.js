@@ -23,13 +23,13 @@ const linkedin_followers = {
         linkedInContactData: Joi.array().items(Joi.object().keys({
             acceptButtonText: Joi.string().optional().allow(''),
             acceptLabel: Joi.string().optional().allow(''),
-            avatar: Joi.string().required(),
+            avatar: Joi.string().optional().allow(''),
             caption: Joi.string().required(),
-            degree: Joi.string().required(),
-            headline: Joi.string().required(),
+            degree: Joi.string().optional().allow(''),
+            headline: Joi.string().optional().allow(''),
             mutualConnections: Joi.string().required().allow(''),
             name: Joi.string().required(),
-            profileUrl: Joi.string().required(),
+            profileUrl: Joi.string().optional().allow(''),
         })).required(),
     }),
 };
