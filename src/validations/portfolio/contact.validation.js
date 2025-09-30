@@ -17,9 +17,27 @@ const linkedin_email = {
     }),
 };
 
+const linkedin_followers = {
+    body: Joi.object().keys({
+        count: Joi.number().required(),
+        linkedInContactData: Joi.array().items(Joi.object().keys({
+            acceptButtonText: Joi.string().optional().allow(''),
+            acceptLabel: Joi.string().optional().allow(''),
+            avatar: Joi.string().required(),
+            caption: Joi.string().required(),
+            degree: Joi.string().required(),
+            headline: Joi.string().required(),
+            mutualConnections: Joi.string().required().allow(''),
+            name: Joi.string().required(),
+            profileUrl: Joi.string().required(),
+        })).required(),
+    }),
+};
+
 
 
 module.exports = {
     email,
-    linkedin_email
+    linkedin_email,
+    linkedin_followers
 };

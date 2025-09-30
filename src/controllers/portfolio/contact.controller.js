@@ -29,6 +29,31 @@ const sendLinkedInEmail = catchAsync(async (req, res) => {
     }
 });
 
+const getLinkedInFollowers = catchAsync(async (req, res) => {
+    const followers = await contactService.getLinkedInFollowers();
+    if (!followers || followers.length === 0) {
+        handleSuccess(httpStatus.OK, { followers: [] }, 'No LinkedIn followers found.', req, res);
+    } else {
+        handleSuccess(httpStatus.OK, { followers }, 'LinkedIn followers retrieved successfully.', req, res);
+    }
+});
+
+const setLinkedInFollowers = catchAsync(async (req, res) => {
+    const { count, linkedInContactData } = req.body;
+    console.log(count, linkedInContactData);
+    if (!count || !linkedInContactData || !Array.isArray(linkedInContactData)) {
+        return res.status(httpStatus.BAD_REQUEST).json({ message: 'Invalid followers data' });
+    }
+    try {
+        const updatedFollowers = await contactService.setLinkedInFollowers(linkedInContactData);
+        handleSuccess(httpStatus.OK, { followers: updatedFollowers }, 'LinkedIn followers set successfully.', req, res);
+    } catch (error) {
+        console.error('Error setting LinkedIn followers:', error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Failed to set LinkedIn followers' });
+    }
+});
+
+
 const generateEmail = async ({ email, name, phoneNumber, subject, message }) => {
     const adminMail = 'aashishbhagwat4u@gmail.com';
     const emailSubject = `Contact Form Submission: ${subject}`;
@@ -47,5 +72,7 @@ const generateLinkedInEmail = async ({ email }) => {
 
 module.exports = {
     sendEmail,
-    sendLinkedInEmail
+    sendLinkedInEmail,
+    getLinkedInFollowers,
+    setLinkedInFollowers
 };

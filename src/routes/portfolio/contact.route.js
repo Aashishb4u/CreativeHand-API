@@ -8,4 +8,8 @@ const router = express.Router();
 router.post('/initiate', validate(contactValidation.email), contactController.sendEmail);
 router.post('/linkedIn_mail', validate(contactValidation.linkedin_email), contactController.sendLinkedInEmail);
 
+// GET endpoints for LinkedIn followers
+router.get('/linkedin/followers', contactController.getLinkedInFollowers);
+router.post('/linkedin/followers/set', validate(contactValidation.linkedin_followers), contactController.setLinkedInFollowers);
+
 module.exports = router;

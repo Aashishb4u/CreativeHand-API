@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const config = require('../../config/config');
 const logger = require('../../config/logger');
 const linkedInEmail = require('../../models/linkedInEmail.model'); // Assume you have a model to track sent emails
+const linkedInFollowers = require('../../models/linkedInFollowers.model'); // Assume you have a model to track LinkedIn followers
 
 const transport = nodemailer.createTransport(config.email.smtp);
 /* istanbul ignore next */
@@ -135,8 +136,97 @@ const sendLinkedInEmail = async (userEmail, bodyForUser) => {
 //
 // };
 
+const getLinkedInFollowers = async () => {
+    // Fetch all documents from the collection
+    const followersDocs = await linkedInFollowers.find({});
+    if (!followersDocs || followersDocs.length === 0) return [];
+
+    // Map each document to the desired structure
+    return followersDocs.map(doc => ({
+        acceptButtonText: doc.acceptButtonText,
+        acceptLabel: doc.acceptLabel,
+        avatar: doc.avatar,
+        caption: doc.caption,
+        degree: doc.degree,
+        headline: doc.headline,
+        mutualConnections: doc.mutualConnections,
+        name: doc.name,
+        profileUrl: doc.profileUrl
+    }));
+};
+
+// Example cURL for the endpoint that calls setLinkedInFollowers
+// (Assumes your route is POST /api/portfolio/linkedin-followers)
+//
+// curl -X POST https://your-domain.com/api/portfolio/linkedin-followers \
+//   -H "Content-Type: application/json" \
+//   -d '{
+//         "count": 1,
+//         "linkedInContactData": {
+//           "acceptButtonText": "Follow",
+//           "acceptLabel": "Follow",
+//           "avatar": "https://media.licdn.com/dms/image/D4D03AQH0lIqegYO0Jg/profile-displayphoto-shrink_100_100/0/1715628623134?e=1723680000&v=beta&t=example",
+//           "caption": "Software Engineer",
+//           "degree": "2nd",
+//           "headline": "Full-stack developer",
+//           "mutualConnections": "5 mutual connections",
+//           "name": "Aashish Bhagwat",
+//           "profileUrl": "https://www.linkedin.com/in/aashishbhagwat"
+//         }
+//       }'
+
+const setLinkedInFollowers = async (linkedInContactData) => {
+    // linkedInContactData is an array – process each entry
+    const results = [];
+
+    for (const contact of linkedInContactData) {
+        const {
+            avatar,
+            caption,
+            degree,
+            headline,
+            mutualConnections,
+            name,
+            profileUrl
+        } = contact;
+
+        // Try to find an existing followers document by profileUrl (LinkedIn URL)
+        const followersDoc = await linkedInFollowers.findOne({ profileUrl });
+
+        if (!followersDoc) {
+            console.log("No existing document found for profileUrl:", profileUrl);
+            // If no document exists, create a new one with all provided fields
+            const newDoc = await linkedInFollowers.create({
+                avatar,
+                caption,
+                degree,
+                headline,
+                mutualConnections,
+                name,
+                profileUrl
+            });
+            results.push(newDoc);
+        } else {
+            console.log("Existing document found for profileUrl:", profileUrl);
+            // Update the existing document with new data
+            followersDoc.avatar = avatar;
+            followersDoc.caption = caption;
+            followersDoc.degree = degree;
+            followersDoc.headline = headline;
+            followersDoc.mutualConnections = mutualConnections;
+            followersDoc.name = name;
+            followersDoc.profileUrl = profileUrl;
+            await followersDoc.save();
+            results.push(followersDoc);
+        }
+    }
+
+    return results;
+};
 
 module.exports = {
     sendPortfolioEmail,
-    sendLinkedInEmail
+    sendLinkedInEmail,
+    getLinkedInFollowers,
+    setLinkedInFollowers,
 };
