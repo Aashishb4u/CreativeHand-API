@@ -23,7 +23,7 @@ const updateFollower = {
   body: Joi.object().keys({
     emailOutreachStatus: Joi.string().optional().allow(""),
     linkedinOutreachStatus: Joi.string().optional().allow(""),
-  }),
+  }).optional(),
 };
 
 

@@ -45,12 +45,12 @@ const linkedInFollowersSchema = mongoose.Schema(
     },
     emailOutreachStatus: {
       type: String,
-      enum: ['pending', 'sent', 'failed', 'skipped'],
+      enum: ['pending', 'sent', 'failed', 'email_missing'],
       default: 'pending'
     },
     linkedinOutreachStatus: {
       type: String,
-      enum: ['pending', 'sent', 'failed', 'skipped'],
+      enum: ['pending', 'sent', 'failed', 'restricted_degree'],
       default: 'pending'
     },
     outreachDone: {

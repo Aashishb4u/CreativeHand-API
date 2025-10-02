@@ -163,24 +163,41 @@ const updateLinkedInFollowerById = async (profileId, emailOutreachStatus, linked
     throw new Error('Follower not found');
   }
 
-  // Determine outreachDone based on outreach statuses
-  const outreachDone =
-    emailOutreachStatus === 'sent' ||
-    linkedinOutreachStatus === 'sent';
+
 
   // Update document
+  // Build the $set object only with the fields that are actually provided
+  const updateFields = {};
+  if (typeof emailOutreachStatus !== 'undefined') {
+    updateFields.emailOutreachStatus = emailOutreachStatus;
+  }
+  
+  if (typeof linkedinOutreachStatus !== 'undefined') {
+    updateFields.linkedinOutreachStatus = linkedinOutreachStatus;
+  }
+
+  // If neither status was supplied, skip the update entirely
+  if (Object.keys(updateFields).length === 0) {
+    return follower;
+  }
+
+  // Compute outreachDone only from the statuses that are present
+  const outreachDone =
+    (updateFields.emailOutreachStatus === 'sent' ||
+     updateFields.linkedinOutreachStatus === 'sent');
+
+  updateFields.outreachDone = outreachDone;
+  updateFields.outreachAttempts = outreachDone
+    ? (follower.outreachAttempts || 0) + 1
+    : follower.outreachAttempts;
+  updateFields.lastOutreachAt = outreachDone
+    ? new Date()
+    : follower.lastOutreachAt;
+
   const updatedDoc = await linkedInFollowers.findByIdAndUpdate(
     profileId,
-    {
-      $set: {
-        outreachDone: outreachDone,
-        emailOutreachStatus: emailOutreachStatus,
-        linkedinOutreachStatus: linkedinOutreachStatus,
-        outreachAttempts: outreachDone ? (follower.outreachAttempts || 0) + 1 : follower.outreachAttempts,
-        lastOutreachAt: outreachDone ? new Date() : follower.lastOutreachAt
-      }
-    },
-    { new: true } // return updated doc
+    { $set: updateFields },
+    { new: true }
   );
 
   return updatedDoc;
