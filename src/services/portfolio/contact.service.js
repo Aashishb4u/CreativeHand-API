@@ -155,6 +155,40 @@ const getLinkedInFollowers = async () => {
     }));
 };
 
+const updateLinkedInFollowerById = async (profileId, emailOutreachStatus, linkedinOutreachStatus) => {
+  // Fetch the current document first
+  const follower = await linkedInFollowers.findById(profileId);
+
+  if (!follower) {
+    throw new Error('Follower not found');
+  }
+
+  // Determine outreachDone based on outreach statuses
+  const outreachDone =
+    emailOutreachStatus === 'sent' ||
+    linkedinOutreachStatus === 'sent';
+
+  // Update document
+  const updatedDoc = await linkedInFollowers.findByIdAndUpdate(
+    profileId,
+    {
+      $set: {
+        outreachDone: outreachDone,
+        emailOutreachStatus: emailOutreachStatus,
+        linkedinOutreachStatus: linkedinOutreachStatus,
+        outreachAttempts: outreachDone ? (follower.outreachAttempts || 0) + 1 : follower.outreachAttempts,
+        lastOutreachAt: outreachDone ? new Date() : follower.lastOutreachAt
+      }
+    },
+    { new: true } // return updated doc
+  );
+
+  return updatedDoc;
+};
+
+
+
+
 // Example cURL for the endpoint that calls setLinkedInFollowers
 // (Assumes your route is POST /api/portfolio/linkedin-followers)
 //
@@ -174,56 +208,66 @@ const getLinkedInFollowers = async () => {
 //           "profileUrl": "https://www.linkedin.com/in/aashishbhagwat"
 //         }
 //       }'
-
 const setLinkedInFollowers = async (linkedInContactData) => {
-    // linkedInContactData is an array – process each entry
-    const results = [];
+  const results = [];
 
-    for (const contact of linkedInContactData) {
-        const {
-            avatar,
-            caption,
-            degree,
-            headline,
-            name,
-            profileUrl
-        } = contact;
+  for (const contact of linkedInContactData) {
+    const {
+      avatar,
+      caption,
+      degree,
+      headline,
+      name,
+      profileUrl
+    } = contact;
 
-        // Try to find an existing followers document by profileUrl (LinkedIn URL)
-        const followersDoc = await linkedInFollowers.findOne({ profileUrl });
-
-        if (!followersDoc) {
-            console.log("No existing document found for profileUrl:", profileUrl);
-            // If no document exists, create a new one with all provided fields
-            const newDoc = await linkedInFollowers.create({
-                avatar,
-                caption,
-                degree,
-                headline,
-                name,
-                profileUrl
-            });
-            results.push(newDoc);
-        } else {
-            console.log("Existing document found for profileUrl:", profileUrl);
-            // Update the existing document with new data
-            followersDoc.avatar = avatar;
-            followersDoc.caption = caption;
-            followersDoc.degree = degree;
-            followersDoc.headline = headline;
-            followersDoc.name = name;
-            followersDoc.profileUrl = profileUrl;
-            await followersDoc.save();
-            results.push(followersDoc);
-        }
+    // ✅ Extract profileId from profileUrl
+    let profileId = '';
+    if (profileUrl) {
+      const parts = profileUrl.split('/');
+      profileId = parts[parts.length - 1] || '';
     }
 
-    return results;
+    // ✅ Now lookup by profileId instead of profileUrl
+    const followersDoc = await linkedInFollowers.findOne({ profileId });
+
+    if (!followersDoc) {
+      console.log("No existing document found for profileId:", profileId);
+      // Create new document
+      const newDoc = await linkedInFollowers.create({
+        avatar,
+        caption,
+        degree,
+        headline,
+        name,
+        profileUrl,
+        profileId
+      });
+      results.push(newDoc);
+    } else {
+      console.log("Existing document found for profileId:", profileId);
+      // Update the existing document
+      followersDoc.avatar = avatar;
+      followersDoc.caption = caption;
+      followersDoc.degree = degree;
+      followersDoc.headline = headline;
+      followersDoc.name = name;
+      followersDoc.profileUrl = profileUrl;
+      followersDoc.profileId = profileId; // refresh in case URL changed
+      await followersDoc.save();
+      results.push(followersDoc);
+    }
+  }
+
+  return results;
 };
+
+
 
 module.exports = {
     sendPortfolioEmail,
     sendLinkedInEmail,
     getLinkedInFollowers,
     setLinkedInFollowers,
+    updateLinkedInFollowerById,
 };

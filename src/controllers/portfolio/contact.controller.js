@@ -70,9 +70,27 @@ const generateLinkedInEmail = async ({ email }) => {
     return { userEmail: email, bodyForUser };
 };
 
+const updateLinkedInFollowerById = catchAsync(async (req, res) => {
+    const { profileId } = req.params;
+    const { emailOutreachStatus, linkedinOutreachStatus } = req.body;
+    try {
+        const updatedFollower = await contactService.updateLinkedInFollowerById(profileId, emailOutreachStatus, linkedinOutreachStatus);
+        if (!updatedFollower) {
+            return res.status(httpStatus.NOT_FOUND).json({ message: 'Follower not found' });
+        }
+        handleSuccess(httpStatus.OK, { follower: updatedFollower }, 'LinkedIn follower updated successfully.', req, res);
+    } catch (error) {
+        console.error('Error updating LinkedIn follower:', error);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Failed to update LinkedIn follower' });
+    }
+});
+
+
+
 module.exports = {
     sendEmail,
     sendLinkedInEmail,
     getLinkedInFollowers,
-    setLinkedInFollowers
+    setLinkedInFollowers,
+    updateLinkedInFollowerById,
 };

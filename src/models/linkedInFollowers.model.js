@@ -38,7 +38,37 @@ const linkedInFollowersSchema = mongoose.Schema(
     profileUrl: {
       type: String,
       default: ''
-    }
+    },
+    email: {
+      type: String,
+      default: null
+    },
+    emailOutreachStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'failed', 'skipped'],
+      default: 'pending'
+    },
+    linkedinOutreachStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'failed', 'skipped'],
+      default: 'pending'
+    },
+    outreachDone: {
+      type: Boolean,
+      default: false
+    },
+    lastOutreachAt: {
+      type: Date,
+      default: null
+    },
+    outreachAttempts: {
+      type: Number,
+      default: 0
+    },
+    profileId: {
+      type: String,
+      default: ''
+    },
   },
   {
     timestamps: true
@@ -48,6 +78,6 @@ const linkedInFollowersSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 linkedInFollowersSchema.plugin(toJSON);
 
-const linkedInFollowers = mongoose.model('linkedInFollowers', linkedInFollowersSchema);
+const linkedInFollowers = mongoose.model('linkedInFollowersTest', linkedInFollowersSchema);
 
 module.exports = linkedInFollowers;

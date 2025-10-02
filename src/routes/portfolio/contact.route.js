@@ -11,5 +11,5 @@ router.post('/linkedIn_mail', validate(contactValidation.linkedin_email), contac
 // GET endpoints for LinkedIn followers
 router.get('/linkedin/followers', contactController.getLinkedInFollowers);
 router.post('/linkedin/followers/set', validate(contactValidation.linkedin_followers), contactController.setLinkedInFollowers);
-
+router.post('/linkedin/followers/:profileId/update', validate(contactValidation.updateFollower), contactController.updateLinkedInFollowerById);
 module.exports = router;

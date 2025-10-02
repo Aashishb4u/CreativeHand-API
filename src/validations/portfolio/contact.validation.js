@@ -16,6 +16,18 @@ const linkedin_email = {
   }),
 };
 
+const updateFollower = {
+  params: Joi.object().keys({
+    profileId: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    emailOutreachStatus: Joi.string().optional().allow(""),
+    linkedinOutreachStatus: Joi.string().optional().allow(""),
+  }),
+};
+
+
+
 const linkedin_followers = {
   body: Joi.object().keys({
     count: Joi.number().required(),
@@ -41,4 +53,5 @@ module.exports = {
   email,
   linkedin_email,
   linkedin_followers,
+  updateFollower
 };
