@@ -151,7 +151,13 @@ const getLinkedInFollowers = async () => {
         headline: doc.headline,
         mutualConnections: doc.mutualConnections,
         name: doc.name,
-        profileUrl: doc.profileUrl
+        profileUrl: doc.profileUrl,
+        profileId: doc.profileId,
+        outreachDone: doc.outreachDone,
+        lastOutreachAt: doc.lastOutreachAt,
+        outreachAttempts: doc.outreachAttempts,
+        emailOutreachStatus: doc.emailOutreachStatus,
+        linkedinOutreachStatus: doc.linkedinOutreachStatus,
     }));
 };
 const updateLinkedInFollowerById = async (profileId, emailOutreachStatus, linkedinOutreachStatus) => {
