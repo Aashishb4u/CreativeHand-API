@@ -78,6 +78,6 @@ const linkedInFollowersSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 linkedInFollowersSchema.plugin(toJSON);
 
-const linkedInFollowers = mongoose.model('linkedInFollowersTest', linkedInFollowersSchema);
+const linkedInFollowers = mongoose.model('linkedInFollowers', linkedInFollowersSchema);
 
 module.exports = linkedInFollowers;
