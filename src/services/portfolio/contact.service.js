@@ -154,48 +154,42 @@ const getLinkedInFollowers = async () => {
         profileUrl: doc.profileUrl
     }));
 };
-
 const updateLinkedInFollowerById = async (profileId, emailOutreachStatus, linkedinOutreachStatus) => {
-  // Fetch the current document first
-  const follower = await linkedInFollowers.findById(profileId);
+  // Look up by profileId (NOT _id)
+  const follower = await linkedInFollowers.findOne({ profileId });
+  if (!follower) throw new Error('Follower not found');
 
-  if (!follower) {
-    throw new Error('Follower not found');
-  }
+  // If neither status provided, nothing to do
+  const willSetEmail = typeof emailOutreachStatus !== 'undefined';
+  const willSetLinkedIn = typeof linkedinOutreachStatus !== 'undefined';
+  if (!willSetEmail && !willSetLinkedIn) return follower;
 
+  // Derive the statuses that the doc will have AFTER this update
+  const nextEmailStatus = willSetEmail ? emailOutreachStatus : follower.emailOutreachStatus;
+  const nextLinkedInStatus = willSetLinkedIn ? linkedinOutreachStatus : follower.linkedinOutreachStatus;
 
+  // Compute final outreachDone based on the next statuses
+  const willBeDone = (nextEmailStatus === 'sent') || (nextLinkedInStatus === 'sent');
 
-  // Update document
-  // Build the $set object only with the fields that are actually provided
-  const updateFields = {};
-  if (typeof emailOutreachStatus !== 'undefined') {
-    updateFields.emailOutreachStatus = emailOutreachStatus;
-  }
-  
-  if (typeof linkedinOutreachStatus !== 'undefined') {
-    updateFields.linkedinOutreachStatus = linkedinOutreachStatus;
-  }
+  // Increment attempts only on first transition to "done"
+  const wasDone = follower.outreachDone === true ||
+                  follower.emailOutreachStatus === 'sent' ||
+                  follower.linkedinOutreachStatus === 'sent';
 
-  // If neither status was supplied, skip the update entirely
-  if (Object.keys(updateFields).length === 0) {
-    return follower;
-  }
-
-  // Compute outreachDone only from the statuses that are present
-  const outreachDone =
-    (updateFields.emailOutreachStatus === 'sent' ||
-     updateFields.linkedinOutreachStatus === 'sent');
-
-  updateFields.outreachDone = outreachDone;
-  updateFields.outreachAttempts = outreachDone
+  const nextAttempts = (willBeDone && !wasDone)
     ? (follower.outreachAttempts || 0) + 1
-    : follower.outreachAttempts;
-  updateFields.lastOutreachAt = outreachDone
-    ? new Date()
-    : follower.lastOutreachAt;
+    : (follower.outreachAttempts || 0);
 
-  const updatedDoc = await linkedInFollowers.findByIdAndUpdate(
-    profileId,
+  const updateFields = {};
+  if (willSetEmail)     updateFields.emailOutreachStatus     = emailOutreachStatus;
+  if (willSetLinkedIn)  updateFields.linkedinOutreachStatus  = linkedinOutreachStatus;
+
+  updateFields.outreachDone     = willBeDone;
+  updateFields.outreachAttempts = nextAttempts;
+  updateFields.lastOutreachAt   = willBeDone ? new Date() : follower.lastOutreachAt;
+
+  const updatedDoc = await linkedInFollowers.findOneAndUpdate(
+    { profileId },
     { $set: updateFields },
     { new: true }
   );
